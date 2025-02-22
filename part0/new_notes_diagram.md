@@ -5,10 +5,13 @@ sequenceDiagram
 
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     activate server
+
+    Note right of browser: Server pushes new note object into notes array
+
     server-->>browser: 302 redirect to -> https://studies.cs.helsinki.fi/exampleapp/notes
     deactivate server
 
-    Note right of browser: Server pushes new note object into notes array
+    
     Note right of browser: POST request  cotains form data in body (note: "newly_entered_note")
     Note right of browser: Response 302 instructs browser to perform a GET call to the provided address
 
