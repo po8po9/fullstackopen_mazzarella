@@ -15,9 +15,12 @@ sequenceDiagram
 
     browser->>server: POST /exampleapp/new_note_spa ("Content-type", "application/json")
     activate server
+
+    Note left of server: Server formats note (formatNote(req.body)) and adds it to notes (createNote())
     server-->>browser: Returns status 201 OK and a message "note created"  
     deactivate server
 
+    Note right of browser: Listener on server request is triggered by status 201 , it logs the message from server in console.
    
   
     
