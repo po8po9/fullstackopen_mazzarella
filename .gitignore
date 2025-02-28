@@ -1,0 +1,6 @@
+#npm folders#
+
+node_modules/
+public/
+*.json
+
