@@ -1,73 +1,73 @@
 const App = () => {
 
     //Part 1.3  - new definitions of variables, refactor so app still works
-    //Part 1.4 -> now objects are an array
-    
- const course = 'Half Stack application development'
+    //Part 1.4 -> now objects are in an array -> solution is still clumsy
+const course = 'Half Stack application development'
 
-  const part1 = {
-    name: 'Fundamentals of React',
-    exercises: 10
-  }
-  const part2 = {
-    name: 'Using props to pass data',
-    exercises: 7
-  }
-  const part3 = {
-    name: 'State of a component',
-    exercises: 14
-  }
-    
+const parts = [
+    {
+      name: 'Fundamentals of React',
+      exercises: 10
+    },
+    {
+      name: 'Using props to pass data',
+      exercises: 7
+    },
+    {
+      name: 'State of a component',
+      exercises: 14
+    }
+  ]    
 
   const Header = (course)=>{
 	return (
-	    <p>{course.title}</p>
+	    <p>{course.course}</p>
 	);
   }
 
-    const Part = (part) => {
-	console.log (part);	
+   const Part = (item) => {
+       console.log(item);
 	    return(
 	    <p>
-		{part.name} {part.exer}
+		{item.item.name} {item.item.exercises}
 	    </p>
 		);
 	}
 
-  const Content = ()=>{
+  const Content = (parts)=>{
 	
-	
+      
 	return(
 	<>   
-	    <Part  name={part1.name} exer={part1.exercises}/>
-	    <Part  name={part2.name} exer={part2.exercises}/>
-	    <Part  name={part3.name} exer={part3.exercises}/>
+	    <Part item={parts.parts[0]}/>
+	    <Part item={parts.parts[1]}/>
+	    <Part item={parts.parts[2]}/>
 	</> 
 	);
 
 	};
 
-    const Total = () => {
-	//here the sum is not pretty, but it works
+   const Total = (parts) => {
+       //
+       let a=parts.parts[0].exercises;
+       let b=parts.parts[1].exercises;
+       let c=parts.parts[2].exercises;
 	return (
 	    <p>
-		Number of exercises = {part1.exercises+part2.exercises+part3.exercises}
+		Number of exercises = {a+b+c}
 	    </p>
-
-	)
+	    )
 
     }
     
    
     
     return (
-    <div>
-	<Header title={course}/>
-
-	<Content/>
-	<Total />
-	
-    </div>
+	<div>
+	    <Header course={course} />	    
+	    <Content parts={parts} />
+	    <Total parts={parts}/>
+	</div>
   )
 }
 
