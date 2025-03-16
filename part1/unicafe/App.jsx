@@ -1,22 +1,14 @@
 import { useState } from 'react'
 
-const STATES = 3
 const App = () => {
-    const [good, setGood] = useState(0)
-    const [neutral, setNeutral] = useState(0)
-    const [bad, setBad] = useState(0)
-    const [average, setAverage] = useState (0)
-    const [total, setTotal] = useState (0)    
-    
-    const Title = ({text}) =>  <h1> {text} </h1>
-    const Display = ({value, text}) =><span> {text} {value}  </span> //general display / renderer 
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState (0)
+  
 
-    const Button = (props) =>	 
-	      <button onClick={props.onClick}>
-		    {props.text}
-	      </button>
-        
-    const setFeedback = (state) => () => { //could be optimized?
+   const setFeedback = (state) => () => { //could be optimized?
 	switch (state){
 	case 'N':	 
 	    setNeutral (neutral + 1);
@@ -27,41 +19,67 @@ const App = () => {
 	case 'B':
 	    setBad (bad + 1)	  
 	    break;
-	}	
-	setTotal (total + 1)	
-    }
-    const Statistics = () =>{	
-	if (total > 0) {
-	    return(		
-		<div>
-		    <Display value = {neutral} text="neutral"/><br/>
-		    <Display value = {good} text="good"/><br/>
-		    <Display value = {bad} text="neutral"/><br/>
-		    <Display value = {total}  text = "total score: " /><br/>
-		    <Average /><br/>
-		    <Positive />
-		</div>)
-	}
-	return(<div> no feedback given </div>)
-    }
-	
-    const Average = () => <span>average: {total/STATES} </span>
+	}       
+       setTotal (total + 1)
+       
+   }    	
+  return (
+    <div>
+	<Button onClick = {setFeedback('G')} text="good"/>
+	<Button onClick = {setFeedback('N')} text="neutral"/>	     	   
+	<Button onClick = {setFeedback('B')} text="bad"/>
+	<Statistics props = {{good: good, bad : bad, neutral : neutral, sum :total}} />
 
-    const Positive = () => {
-	if ( good > 0){
-	    return (<span>positive feedback: {(good*100)/total}%</span>)
-	}
-	return <span> positive feedback: none yet </span>
-    }  
-    return (
-	<div >	   
-	    <Title text="give feedback"/>
-	    <Button onClick = {setFeedback('G')} text="good"/>
-	    <Button onClick = {setFeedback('N')} text="neutral"/>	     	   
-	    <Button onClick = {setFeedback('B')} text="bad"/>
-	    <Title text="statistics"/>	   
-	    <Statistics />
-	  </div>)
-   
+    </div>
+  )
 }
+const Statistics = ({props}) => {
+
+	if (props.sum === 0 ){
+		return (<div> no feedback yet </div>)
+	}
+	
+    console.log (props.sum)
+    /*console.log (props.bad * (-1))
+    console.log (props.neutral)
+    console.log (props.total)*/
+    
+	const averageFeed = () => {
+		if (props.sum >0 ){
+			return ( (props.good + (props.bad * (-1)) )/props.sum)
+		}
+		return 0
+    }
+    
+ 	const positiveFeed = () => {
+
+		if (props.good === 0){
+	    		return 0
+		}
+		return (props.good*100/props.sum + '%')
+    }
+
+    return (
+	<div>
+	<StatisticLine value = {props.good}  text="good"/>
+	<StatisticLine value = {props.neutral}  text="neutral"/>
+	<StatisticLine value = {props.bad}  text="bad"/>
+	<StatisticLine value = {props.sum}  text="all"/>
+	
+	<StatisticLine value = {positiveFeed ()}  text="positive feedback"/>
+	<StatisticLine value = {averageFeed ()}  text="average feedback"/>
+	</div>
+    )
+	
+}
+const StatisticLine = ({text, value}) => {
+    return (<div>
+		   {text} {value}
+		</div>)
+    }
+ const Button = (props) =>	 
+	      <button onClick={props.onClick}>
+		    {props.text}
+	      </button>
 export default App
+
