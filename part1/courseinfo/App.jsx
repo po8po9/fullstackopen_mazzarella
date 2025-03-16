@@ -19,13 +19,22 @@ const App = () => {
 	    }
 	]
     }
-
-    const Header = ({course})=>{return (<p>{course.name}</p>);}
+	return (
+		<div>
+			<Header course={course}/>
+			<Content parts={course.parts} />
+			<Total parts={course.parts}/>
+		 
+		</div>
+		)
+	}
+	
+const Header = ({course})=>{return (<p>{course.name}</p>);}
  
 
-    const Part = ({item}) =>{return(<p>   {item.name} ::>>  {item.exercises} </p>);  }
+const Part = ({item}) =>{return(<p>   {item.name} ::>>  {item.exercises} </p>);  }
 
-    const Content = ({parts})=>{	
+const Content = ({parts})=>{	
 	return(
 	    <>   
 		<Part item={parts[0]}/>
@@ -34,7 +43,7 @@ const App = () => {
 	    </> 
 	)};
 
-    const Total = ({parts}) => {
+const Total = ({parts}) => {
 	//
 	let a=parts[0].exercises;
 	let b=parts[1].exercises;
@@ -45,13 +54,5 @@ const App = () => {
 	    </p>
 	)} 
     
-    return (
-	<div>
-	    <Header course={course}/>
-	    <Content parts={course.parts} />
-	    <Total parts={course.parts}/>
-	 
-	</div>
-    )}
-
+ 
 export default App
