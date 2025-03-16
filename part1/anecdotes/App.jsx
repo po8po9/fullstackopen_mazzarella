@@ -12,9 +12,9 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
    
-  const votes_arr = new Uint8Array(8); 
+  //const votes_arr = new Uint8Array(8); 
   const [selected, setSelected] = useState(0)
-  const [votes_poll, setPoll] = useState(votes_arr)
+  const [votes_poll, setPoll] = useState(new Uint8Array(8))
  
   
 const getRandom = (max) => () =>  {
@@ -27,21 +27,25 @@ const vote = (selected) => () => {
 	const new_vote = [...votes_poll]
 	new_vote [selected] += 1
 	setPoll(new_vote)
-	{console.log ('new vote : ')}
-	{console.log (new_vote)}
+
 	
 }
+const getHigh = () =>  {
 	
+		console.log(Math.max(...votes_poll))
+		console.log(Math.max(...votes_poll))
+		return votes_poll.indexOf(Math.max(...votes_poll))
+}
 
   return (
     <div>
       {anecdotes[selected]}
-	  {console.log ('votes poll : ')}
-	  {console.log (votes_poll)}
+	  
 	  <br/>
 	  <Button onClick={getRandom(anecdotes.length)} text="next anecdote"/>
 	  <Button onClick={vote (selected)} text="vote"/>
-	  <DisplayVotes poll = {anecdotes[selected]} />
+	  <DisplayVotes poll = {votes_poll} current = {selected} />
+	  <DisplayHigh poll = {votes_poll} current = {getHigh()} anec = {anecdotes[getHigh ()]} />
     </div>
   )
 }
@@ -50,7 +54,19 @@ const Button = (props) =>
 	  {props.text}
 	</button>
 
-const DisplayVotes = ({anc})=>
-	<p>coming soon</p>
+const DisplayVotes = ({poll, current})=>
+	<p><br/>This ancedote has  {poll[current]} votes </p>
 
+const DisplayHigh =  ({poll, current, anec})=>{
+	if (poll[current] > 0 ){
+		return (
+			<div>		
+			<h2><br/>This ancedote has the highest votes with {poll[current]} vts. </h2>
+			<p>{anec}</p>
+			</div>
+			)	
+	}
+	return (<p>No winner yet</p>)
+	
+}
 export default App

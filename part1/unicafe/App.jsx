@@ -93,4 +93,3 @@ const StatisticLine = ({text, value}) => {
 		    {props.text}
 	      </button>
 export default App
-
