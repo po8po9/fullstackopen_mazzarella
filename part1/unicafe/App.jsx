@@ -25,6 +25,7 @@ const App = () => {
    }    	
   return (
     <div>
+	<h1>give feedback</h1>
 	<Button onClick = {setFeedback('G')} text="good"/>
 	<Button onClick = {setFeedback('N')} text="neutral"/>	     	   
 	<Button onClick = {setFeedback('B')} text="bad"/>
@@ -61,6 +62,9 @@ const Statistics = ({props}) => {
 
     return (
 	<div>
+		<h1>statistics</h1>
+	<table>
+		<tbody>
 	<StatisticLine value = {props.good}  text="good"/>
 	<StatisticLine value = {props.neutral}  text="neutral"/>
 	<StatisticLine value = {props.bad}  text="bad"/>
@@ -68,15 +72,22 @@ const Statistics = ({props}) => {
 	
 	<StatisticLine value = {positiveFeed ()}  text="positive feedback"/>
 	<StatisticLine value = {averageFeed ()}  text="average feedback"/>
+	</tbody>
+	</table>
 	</div>
     )
 	
 }
 const StatisticLine = ({text, value}) => {
-    return (<div>
-		   {text} {value}
-		</div>)
-    }
+    
+	return (<tr>
+		   
+				<td>{text} </td>		
+			
+				<td>{value} </td>
+			
+				</tr>
+    )}
  const Button = (props) =>	 
 	      <button onClick={props.onClick}>
 		    {props.text}
