@@ -1,39 +1,5 @@
 
-const Content = ({parts}) =>{
- return(
- <ul>
-  {parts.map (x => 
-  <Part key={x.id} course_part={x}/>)}
-  </ul>
-)
-
-}
-
-const Part = ({course_part}) =>{
- return( 
-    <li>
-        {course_part.name} {course_part.exercises}
-    </li>)
-
-}
-const Header = ({title}) =>{
-
-  return (<h1>{title}</h1>) 
-
-}
-//now parts is an array , can use map to display?
-const Course = ({course}) => {
-//console.log (course.parts)
-
-      return (
-        <div>
-          <Header title = {course.name} />
-          <Content parts = {course.parts} />
-        </div>
-)
-
-}
-  
+import Course from './Components'
 
 const App = () => {
   const course = {
@@ -68,7 +34,7 @@ const App = () => {
       },
       {
         name: 'Using props to rock data',
-        exercises: 7,
+        exercises: 123,
         id: 2
       },
       {
@@ -83,6 +49,8 @@ const App = () => {
     <div>
   <Course course={course} />
   <Course course={course2} />
+
+
   </div>
 )
 }
@@ -90,7 +58,9 @@ const App = () => {
 
 
 
-const Total = (props) => <p>Number of exercises {props.total}</p>
+
+
+//const Total = (props) => <p>Number of exercises {props.total}</p>
 
 export default App
 
