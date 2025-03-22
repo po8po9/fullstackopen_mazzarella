@@ -1,4 +1,5 @@
 
+const usedIDs = []
 const Header = ({title}) =>{
    
     return (<h1>{title}</h1>) 
@@ -36,15 +37,15 @@ return <div>Total exercises {totalEx}</div>
 }
 
 const generateID = (originalID) => {
-  let usedIDs = []
+  
   let newID = Math.floor (Math.random() * 100 * originalID) //otherwise IDs are repeated in map function
   usedIDs.push(newID)
-  if (newID in usedIDs){  
+  if (usedIDs.find (id => id === originalID)){  
     console.log ("used ID, recalculating")
     generateID (Math.floor(Math.random()*100))
 }
-//console.log (newID)  
-//console.log (usedIDs)
+console.log (newID)  
+console.log (usedIDs)
   
   return newID
 }
