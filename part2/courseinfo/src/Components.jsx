@@ -1,5 +1,5 @@
 
-const usedIDs = []
+
 const Header = ({title}) =>{
    
     return (<h1>{title}</h1>) 
@@ -35,7 +35,7 @@ const Total = ({course_Parts}) => {
 return <div>Total exercises {totalEx}</div>
 
 }
-
+/*const usedIDs = []
 const generateID = (originalID) => {
   
   let newID = Math.floor (Math.random() * 100 * originalID) //otherwise IDs are repeated in map function
@@ -48,7 +48,7 @@ console.log (newID)
 console.log (usedIDs)
   
   return newID
-}
+}*/
 
 const Course = ({courses}) => {
   
@@ -60,11 +60,11 @@ const Course = ({courses}) => {
              
         // console.log (course.id)
         return (
-              <div key = {generateID(course.id)}>
-
-              <Header key = {generateID(course.id)} title = {course.name} />
-              <Content key = {generateID(course.id)} parts = {course.parts} />
-              <Total key = {generateID(course.id)} course_Parts={course.parts}/>
+              <div key = {crypto.randomUUID()}>
+               
+              <Header key = {crypto.randomUUID()} title = {course.name} />
+              <Content key = {crypto.randomUUID()} parts = {course.parts} />
+              <Total key = {crypto.randomUUID()} course_Parts={course.parts}/>
         
               </div>) 
               }
