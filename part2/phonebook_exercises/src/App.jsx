@@ -5,33 +5,15 @@ import Person from './components/Person'
 const error_Message= ' already exists in the phonebook.'
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Artos Hellas' ,
-      number: '+396558582'
-
-    }
-  ]) 
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  
-
-/**CHANGE HANDLERS 
-
-  //event handler for form
-  const handleNewName = (e) =>{
-    e.preventDefault()
-    console.log(e)
-    //console.log ('button clicked', e.target.value)
-    setNewName (e.target.value)
-  } 
-  //simple solution, need to sharpen into one method
-
-  const handleNewNumber = (e) =>{
-    
-    console.log ('number changed', e.target.value)
-     console.log ('number e object' , e.target)
-    setNewNumber (e.target.value)
-  } 
-    */
+  const [newSearch, setNewSearch] = useState('')
+  const [searchTrue, toggleSearch] = useState(false)
 
 // One method
 
@@ -44,9 +26,16 @@ const App = () => {
     case 'number_input':
       setNewNumber (e.target.value)
       break;
+    case 'search_input':
+      setNewSearch (e.target.value)
+      toggleSearch(true)
+
+      
     
   }
 }
+
+//callsearch
 
 /**FORM INPUT*/
 
@@ -59,9 +48,7 @@ const App = () => {
       (ind)=> (    
         ind.name.toLowerCase() === comparedName.toLowerCase()
       )
-    )
-   
-   
+    )   
     //catch, if not undefined then there is a matching object; after alerting set newName back to 0
     if (name_inUse!= undefined) {
       alert (newName + error_Message)
@@ -69,9 +56,6 @@ const App = () => {
       setNewNumber('')
       return
     }
-    //console.log(name_inUse)
-    //console.log(persons[0].name)
-
     //after preventing default -> add newName to object persons
     //but first create a new object (do not pass newName directly)
 
@@ -87,11 +71,16 @@ const App = () => {
     setNewNumber('')
     
   } 
-
+  console.log (searchTrue)
+  const showContacts = searchTrue ? persons.filter(ind => ind.name.includes(newSearch)) : persons 
+  console.log (showContacts)
   
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>search: <input id='search_input' value={newSearch} onChange={handleChange}/></div>
+
+      <h2>New Contact</h2>
       <form onSubmit={addNewName}>
         <div>
           <div>name: <input id='name_input' value={newName} onChange={handleChange}/></div>
@@ -103,7 +92,9 @@ const App = () => {
       </form>   
       <h2>Numbers</h2>
         <ul>
-        {persons.map((individual)=>(
+        {
+                
+        showContacts.map((individual)=>(
           <Person name={individual.name} key={individual.name} number={individual.number} />
          ))
         }
