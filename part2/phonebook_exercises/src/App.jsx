@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Persons from './components/Persons'
 import Form_Add from './components/Form_Add'
+import phoneService from './services/phonebook_ser'
 /*****************CONSTANTS ****************/
-
-
-
 const App = () => {
 
 
@@ -21,17 +19,14 @@ const App = () => {
 
 //*************************GET DATA FROM JSON SERVER***************/
 
+//step 1 -> services in new file
 
   useEffect( () => {
-      console.log("this is effect")
-      axios.get('http://localhost:3001/persons').then (
-        (response) => {
-          console.log(response)
-          setPersons(response.data)
-        })
+    //  console.log("this is effect")
+      phoneService.getPeople().then (
+       response => setPersons(response)
+      )      
       }, [] )
-
-
 
   /**********HANDLERS****************************** */
     
@@ -39,7 +34,7 @@ const App = () => {
   const handleChange = (e)=> {
 
   switch(e.target.id){
-    case 'name_input':     
+    case 'name_inpufit':     
       setNewName (e.target.value)
       break;
     case 'number_input':
@@ -62,7 +57,7 @@ const App = () => {
         ind.name.trim().toLowerCase() === newName.trim().toLowerCase()
       )
     )   
-    if (name_inUse!= undefined) {
+    if (name_inUse!= undefined) { //found
       alert (newName + error_Message)
       setNewName('')
       setNewNumber('')
@@ -77,6 +72,11 @@ const App = () => {
     /**Add */
   
     setPersons(persons.concat(newPerson))
+
+    //add to DB
+
+    
+
     /**Clear */
     setNewName('')
     setNewNumber('')    
@@ -89,7 +89,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
    
-        <Search query={newSearch} handler= {handleChange}/>
+      <Search query={newSearch} handler= {handleChange}/>
       
 
       <h2>New Contact</h2>
@@ -104,10 +104,6 @@ const App = () => {
     </div>
   )
 }
-
-
-
-
 
 const Search =({query, handler})=>{
 

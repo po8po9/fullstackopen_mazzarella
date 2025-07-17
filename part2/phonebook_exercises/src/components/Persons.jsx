@@ -1,7 +1,6 @@
 import Person from "./Person"
 const Persons =({list})=>{
-    console.log (list)
-    return(
+     return(
       <ul>
         {        
         list.map((individual)=>(
