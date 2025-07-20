@@ -28,7 +28,7 @@ const popPerson = (poppedPerson)=>{
 }
 
 const updatePerson = (updatedPerson) => {
-    const request = axios.put(`${baseURL}/${id}`, updatedPerson);
+    const request = axios.put(`${baseURL}/${updatedPerson.id}`, updatedPerson);
     return request.then(response => response.data);
 }
 export default {getPeople, addPerson, popPerson, updatePerson}

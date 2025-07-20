@@ -24,8 +24,8 @@ const App = () => {
 
 
   useEffect( () => {
-      phoneService.getPeople().then (
-       response => setPersons(response)
+      phoneService.getPeople().then (response => 
+        setPersons(response)
       )      
       }, [] )
 
@@ -54,21 +54,39 @@ const App = () => {
   }
 }
   const addNewName = (ev) => {
+    
     ev.preventDefault()
     //first check if exists
 
-//    let comparedName = newName.trim() //avoid spaces at EOSentance
     let name_inUse = persons.find (
-      (ind)=> (    
-        ind.name.trim().toLowerCase() === newName.trim().toLowerCase()
-      )
+      (ind)=> ind.name.trim().toLowerCase() === newName.trim().toLowerCase()// trim avoids spaces at EOSentance
     )   
+
     if (name_inUse!= undefined) { //found
       if(confirm (`${newName}is already in the phonebook, update phone number? ` )){
 
-        console.log ("write a function to actually update :)") //here ->
+        //console.log ("write a function to actually update :)") //here ->
+        //console.log ("updatedPerson")
+       
+        
+        const updatedPerson={
+          id:name_inUse.id,
+          name:name_inUse.name,
+          number:newNumber
+        }
 
-        phoneService.updatePerson(name_inUse)
+        //console.log (updatedPerson)
+        phoneService.updatePerson(updatedPerson)
+        .then ((returnedUpdated) =>{
+          let indexObj = persons.indexOf(persons.find(person => person.id === updatedPerson.id)) //where + lookupID +define position
+          
+          console.log (indexObj)
+          console.log (persons)
+
+          setPersons(persons.toSpliced (indexObj, 1, updatedPerson))
+        }
+
+        )
 
         
       }
