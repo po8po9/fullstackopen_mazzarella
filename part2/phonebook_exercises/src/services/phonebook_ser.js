@@ -23,9 +23,13 @@ const addPerson =  (newPerson) =>{
 
 }
 
-const popPerson = (poppedPerson)=>{  
-    axios.delete(`${baseURL}/${poppedPerson}`).then (response => response.data)
-
+const popPerson = (poppedPerson)=>{
+    axios.delete(`${baseURL}/${poppedPerson}`).then (response => response.data) //less explicit
 }
-export default {getPeople, addPerson, popPerson}
+
+const updatePerson = (updatedPerson) => {
+    const request = axios.put(`${baseURL}/${id}`, updatedPerson);
+    return request.then(response => response.data);
+}
+export default {getPeople, addPerson, popPerson, updatePerson}
 

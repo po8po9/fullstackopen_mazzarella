@@ -115,13 +115,18 @@ const App = () => {
     )
     console.log (name_toPop)   
     if (name_toPop != undefined && confirm (`Delete ${name_toPop.name} from phonebook?`)){
-      //only delete if it exists!
+      
+      //only delete if it exists and user confirms.
+
       phoneService.popPerson(name_toPop.id)
+      .then( ()=>{
+        setPersons(persons.filter((person) => person.id !== name_toPop.id))
+        setDelName('')
+    })
 
       //console.log ('exists!')
       
-      setPersons(persons.filter((person) => person.id !== name_toPop.id))
-      setDelName('')
+      
       
 
       // console.log (persons)
