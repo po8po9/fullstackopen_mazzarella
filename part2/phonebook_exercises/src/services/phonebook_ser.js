@@ -16,5 +16,16 @@ const getPeople = () =>{
 
 }
 
-export default {getPeople}
+const addPerson =  (newPerson) =>{
+    
+    const request = axios.post(baseURL, newPerson)   
+    return request.then (response => response.data)
+
+}
+
+const popPerson = (poppedPerson)=>{  
+    axios.delete(`${baseURL}/${poppedPerson}`).then (response => response.data)
+
+}
+export default {getPeople, addPerson, popPerson}
 

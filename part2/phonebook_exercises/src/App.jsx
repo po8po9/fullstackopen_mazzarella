@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Persons from './components/Persons'
 import Form_Add from './components/Form_Add'
+import Form_Del from './components/Form_Del'
+import Form_Search from './components/Form_Search'
 import phoneService from './services/phonebook_ser'
 /*****************CONSTANTS ****************/
 const App = () => {
@@ -12,6 +14,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   
   const [newName, setNewName] = useState('')
+  const [delName, setDelName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
   const [searchTrue, toggleSearch] = useState(false)
@@ -19,10 +22,8 @@ const App = () => {
 
 //*************************GET DATA FROM JSON SERVER***************/
 
-//step 1 -> services in new file
 
   useEffect( () => {
-    //  console.log("this is effect")
       phoneService.getPeople().then (
        response => setPersons(response)
       )      
@@ -33,16 +34,21 @@ const App = () => {
 
   const handleChange = (e)=> {
 
+  let changed= e.target.value
+
   switch(e.target.id){
-    case 'name_inpufit':     
-      setNewName (e.target.value)
+    case 'name_input':     
+      setNewName (changed)
       break;
     case 'number_input':
-      setNewNumber (e.target.value)
+      setNewNumber (changed)
       break;
     case 'search_input':
-      setNewSearch (e.target.value)
+      setNewSearch (changed)
       toggleSearch(true)
+    case 'del_input':
+      setDelName (changed)
+      break;
    
     
   }
@@ -51,17 +57,25 @@ const App = () => {
     ev.preventDefault()
     //first check if exists
 
-    let comparedName = newName.trim() //avoid spaces at EOSentance
+//    let comparedName = newName.trim() //avoid spaces at EOSentance
     let name_inUse = persons.find (
       (ind)=> (    
         ind.name.trim().toLowerCase() === newName.trim().toLowerCase()
       )
     )   
     if (name_inUse!= undefined) { //found
-      alert (newName + error_Message)
+      if(confirm (`${newName}is already in the phonebook, update phone number? ` )){
+
+        console.log ("write a function to actually update :)") //here ->
+
+        phoneService.updatePerson(name_inUse)
+
+        
+      }
+
       setNewName('')
       setNewNumber('')
-      return
+      return 
     }
 
 
@@ -71,16 +85,53 @@ const App = () => {
     }
     /**Add */
   
-    setPersons(persons.concat(newPerson))
+    phoneService.addPerson(newPerson)
+      .then (returnedPer => {
+        setPersons(persons.concat(returnedPer))
+        setNewName('')
+        setNewNumber('')
+      }
+      )
+
+     
 
     //add to DB
 
-    
+
 
     /**Clear */
     setNewName('')
     setNewNumber('')    
   } 
+
+
+  const delPerson = (ev) => {
+    ev.preventDefault()
+    
+    let name_toPop = persons.find (
+      (ind)=> (    
+        ind.name.trim().toLowerCase() === delName.trim().toLowerCase()
+      )
+    )
+    console.log (name_toPop)   
+    if (name_toPop != undefined && confirm (`Delete ${name_toPop.name} from phonebook?`)){
+      //only delete if it exists!
+      phoneService.popPerson(name_toPop.id)
+
+      //console.log ('exists!')
+      
+      setPersons(persons.filter((person) => person.id !== name_toPop.id))
+      setDelName('')
+      
+
+      // console.log (persons)
+    }else{
+      alert (`${delName} does not exist`)
+      setDelName('')
+    }
+  
+  
+  }
   /************************************************************ */
 
 
@@ -89,25 +140,26 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
    
-      <Search query={newSearch} handler= {handleChange}/>
+      <Form_Search query={newSearch} handler= {handleChange}/>
       
 
       <h2>New Contact</h2>
 
       <Form_Add handler={handleChange} adder={addNewName} name={newName} number={newNumber}/>
+      <hr></hr>
       
+      <h2>Delete Contact</h2>
+     
+      <Form_Del handler={handleChange} popper={delPerson} name={delName}/>
       
       <h2>Numbers</h2>
 
       <Persons list={showContacts}/>
+
+ 
      
     </div>
   )
-}
-
-const Search =({query, handler})=>{
-
-   return(<div>search: <input id='search_input' value={query} onChange={handler}/></div>)
 }
 
 
